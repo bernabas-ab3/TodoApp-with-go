@@ -2,12 +2,11 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"todo-api/internal/config"
 	"todo-api/internal/database"
 	"todo-api/internal/handlers"
 	"todo-api/internal/middleware"
-
-
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -27,10 +26,18 @@ func main() {
 	}
 	defer pool.Close()
 
+	if err = database.RunMigrations(pool); err != nil {
+		log.Fatal("Failed to run migrations: ", err)
+	}
+
 	var router *gin.Engine = gin.Default()
 	router.SetTrustedProxies(nil)
+	router.Static("/static", "./web")
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		c.File("./web/index.html")
+	})
+	router.GET("/api/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
 			"message":  "Todo API is running well!",
 			"status":   "success!",
 			"database": "connected",

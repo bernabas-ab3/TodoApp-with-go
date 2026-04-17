@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div id="auth-screen" class="screen auth-screen">
+    <div class="auth-layout">
+      <section class="brand-panel">
+        <div class="brand-copy-block">
+          <p class="eyebrow">FocusFlow</p>
+          <h1>Plan less. Finish more.</h1>
+          <p class="lead">A calm workspace for capturing what matters, keeping momentum, and getting through your day with clarity.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">01</div>
+            <div>
+              <h2>Move fast without clutter</h2>
+              <p>Create, update, complete, and organize tasks in a workspace designed to stay out of your way.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">02</div>
+            <div>
+              <h2>Stay focused on now</h2>
+              <p>Search instantly, filter by progress, and surface the tasks that deserve your attention next.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">03</div>
+            <div>
+              <h2>Feel every action</h2>
+              <p>Subtle animation, validation, loading states, and feedback make the app feel responsive and trustworthy.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="auth-panel">
+        <div class="auth-card">
+          <div class="auth-card-header">
+            <p class="eyebrow">Welcome</p>
+            <h2 id="auth-title">Sign in to FocusFlow</h2>
+            <p id="auth-copy" class="muted-copy">Use your account to pick up where you left off.</p>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Authentication mode">
+            <button class="tab is-active" data-auth-tab="login" type="button">Login</button>
+            <button class="tab" data-auth-tab="register" type="button">Register</button>
+          </div>
+
+          <form id="login-form" class="auth-form" novalidate>
+            <label class="field">
+              <span>Email</span>
+              <input id="login-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+              <small class="field-error" data-error-for="login-email"></small>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="login-password" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+              <small class="field-error" data-error-for="login-password"></small>
+            </label>
+            <div class="auth-row">
+              <a id="forgot-password-link" class="inline-link" href="#">Forgot Password?</a>
+            </div>
+            <button id="login-submit" class="primary-btn submit-btn" type="submit">
+              <span class="btn-spinner hidden" aria-hidden="true"></span>
+              <span class="btn-label">Login</span>
+            </button>
+          </form>
+
+          <form id="register-form" class="auth-form hidden" novalidate>
+            <label class="field">
+              <span>Email</span>
+              <input id="register-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+              <small class="field-error" data-error-for="register-email"></small>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="register-password" type="password" name="password" placeholder="Minimum 6 characters" autocomplete="new-password" required>
+              <small class="field-error" data-error-for="register-password"></small>
+            </label>
+            <button id="register-submit" class="primary-btn submit-btn" type="submit">
+              <span class="btn-spinner hidden" aria-hidden="true"></span>
+              <span class="btn-label">Create account</span>
+            </button>
+          </form>
+
+          <div id="auth-feedback" class="banner hidden" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="app-screen" class="screen app-screen hidden">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="topbar-main">
+          <button id="mobile-menu-btn" class="icon-btn mobile-only" type="button" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <p class="eyebrow">FocusFlow</p>
+            <h2>Today's Todos</h2>
+            <p class="muted-copy">Stay on top of what matters most.</p>
+          </div>
+        </div>
+
+        <div id="topbar-actions" class="topbar-actions">
+          <button id="theme-toggle-btn" class="ghost-btn" type="button">Dark mode</button>
+          <button id="topbar-logout-btn" class="ghost-btn" type="button">Logout</button>
+
+          <div class="avatar-menu">
+            <button id="avatar-trigger" class="avatar-trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+              <span id="avatar-circle" class="avatar-circle">FF</span>
+              <span class="avatar-meta">
+                <strong id="session-email">Signed in</strong>
+                <small>Workspace</small>
+              </span>
+            </button>
+
+            <div id="avatar-dropdown" class="dropdown hidden" role="menu">
+              <button id="profile-action" class="dropdown-item" type="button" role="menuitem">Profile</button>
+              <button id="logout-btn" class="dropdown-item danger-item" type="button" role="menuitem">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <aside id="sidebar" class="sidebar">
+          <section class="card create-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Create Task</p>
+                <h3>Add something important</h3>
+              </div>
+            </div>
+
+            <form id="create-todo-form" class="create-form" novalidate>
+              <label class="field">
+                <span>Task title</span>
+                <input id="todo-title" type="text" name="title" placeholder="Prepare sprint review" required>
+                <small class="field-error" data-error-for="todo-title"></small>
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Due date</span>
+                  <input id="todo-due-date" type="date" name="due_date">
+                </label>
+
+                <label class="field">
+                  <span>Priority</span>
+                  <select id="todo-priority" name="priority">
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                    <option value="high">High</option>
+                  </select>
+                </label>
+              </div>
+
+              <button id="create-submit" class="primary-btn submit-btn" type="submit">
+                <span class="btn-spinner hidden" aria-hidden="true"></span>
+                <span class="btn-label">Add task</span>
+              </button>
+            </form>
+          </section>
+
+          <section class="card shortcuts-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Quick Actions</p>
+                <h3>Faster every day</h3>
+              </div>
+            </div>
+
+            <div class="shortcut-list">
+              <div class="shortcut-item">
+                <span class="shortcut-key">Enter</span>
+                <span>Add a task</span>
+              </div>
+              <div class="shortcut-item">
+                <span class="shortcut-key">Ctrl/Cmd + K</span>
+                <span>Focus search</span>
+              </div>
+              <div class="shortcut-item">
+                <span class="shortcut-key">Drag</span>
+                <span>Reorder tasks locally</span>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <section class="content">
+          <section class="card task-card">
+            <div class="card-header task-header">
+              <div>
+                <p class="eyebrow">Task List</p>
+                <h3>Everything in one place</h3>
+              </div>
+              <div class="summary-pills">
+                <span class="summary-pill"><strong id="todo-count">0</strong> tasks</span>
+                <span class="summary-pill"><strong id="completed-count">0</strong> completed</span>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="filter-group">
+                <button class="filter is-active" data-filter="all" type="button">All</button>
+                <button class="filter" data-filter="active" type="button">Active</button>
+                <button class="filter" data-filter="completed" type="button">Completed</button>
+              </div>
+
+              <div class="search-wrapper">
+                <input id="search-input" type="search" placeholder="Search tasks">
+                <button id="clear-search-btn" class="search-clear hidden" type="button" aria-label="Clear search">x</button>
+              </div>
+            </div>
+
+            <div id="task-feedback" class="inline-feedback hidden" aria-live="polite"></div>
+
+            <div id="task-skeleton" class="task-skeleton hidden" aria-hidden="true">
+              <div class="skeleton-item"></div>
+              <div class="skeleton-item"></div>
+              <div class="skeleton-item"></div>
+            </div>
+
+            <div id="todo-list" class="todo-list empty-state">
+              No tasks yet.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: focusflow-api
+    runtime: go
+    plan: free
+    region: oregon
+    buildCommand: go build -o app ./cmd/api
+    startCommand: ./app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: focusflow-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: "10000"
+
+databases:
+  - name: focusflow-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: "18"

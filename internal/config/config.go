@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -17,10 +18,23 @@ func Load() (*Config, error) {
 	if err != nil{
 		log.Println("Warning: .env file not found, using environment variables")
 	} 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "10000"
+	}
     var config *Config = &Config{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
-		Port: os.Getenv("PORT"),
+		Port:        port,
 		JWTSecret:   os.Getenv("JWT_SECRET"),
 	}
+
+	if config.DatabaseURL == "" {
+		return nil, fmt.Errorf("DATABASE_URL is required")
+	}
+
+	if config.JWTSecret == "" {
+		return nil, fmt.Errorf("JWT_SECRET is required")
+	}
+
 	return config, nil
 }
